@@ -1,0 +1,4 @@
+- name: update glauth service restarted
+  ansible.builtin.systemd:
+    name: glauth
+    state: restarted

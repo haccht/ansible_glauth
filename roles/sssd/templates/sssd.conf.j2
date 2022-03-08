@@ -1,0 +1,39 @@
+[sssd]
+config_file_version = 2
+services = nss, pam, ssh
+domains = LDAP
+
+[nss]
+
+[pam]
+
+[domain/LDAP]
+enumerate = false
+cache_credentials = true
+entry_cache_timeout = 10
+
+id_provider = ldap
+auth_provider = ldap
+access_provider = ldap
+autofs_provider = ldap
+chpass_provider = ldap
+
+ldap_uri = {{ ldap_addr }}
+ldap_search_base = {{ ldap_base_dn }}
+ldap_default_bind_dn = {{ ldap_bind_dn }}
+ldap_default_authtok_type = obfuscated_password
+ldap_default_authtok = {{ ldap_authtok }}
+ldap_use_tokengroups = false
+ldap_tls_cacert = {{ ldap_cert_path }}
+ldap_tls_reqcert = allow
+ldap_schema = rfc2307bis
+ldap_group_member = member
+ldap_access_order = filter
+ldap_access_filter = (memberOf={{ ldap_base_dn }})
+ldap_search_timeout = 3
+ldap_network_timeout = 3
+ldap_opt_timeout = 3
+
+ldap_enumeration_search_timeout = 60
+ldap_enumeration_refresh_timeout = 300
+ldap_connection_expire_timeout = 60

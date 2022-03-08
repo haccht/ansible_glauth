@@ -1,0 +1,4 @@
+- name: update sssd service restarted
+  ansible.builtin.systemd:
+    name: sssd
+    state: restarted

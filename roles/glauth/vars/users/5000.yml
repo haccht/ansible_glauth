@@ -1,0 +1,6 @@
+superhacker:
+  uid: 5000
+  gid: 5500
+  mail: "superhacker@example.com"
+  passsha256: "6478579e37aff45f013e14eeb30b3cc56c72ccdc310123bcdf53e0333e3f416a"
+  sshkeys: ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCwLF8vAsOQdqkTn5K7gRtYL+6/TuWw16qZ2MXNF3gUHCZ4ohYh+Mu6zZwF9fqw7n7NGaSbLTuVmilux6ox9JsCj0WrB/Ht3IdZhCXHdvXll5KeKkNU1DKQ9oJmjI3iozpYNe+RrrufeljOHjabdG2MmzcDRxTcmpdwpcWYSLzgfh5U5KaX9J5NPI+FW5qaF6vKdbaP66tKcAawP06KL8op6GwD5dOsMtQUdlRZf75/RPp6zJ9iFSBmZIqjD3+GjJU12L32prX8meQhL/QZU0QDMt+U6fxuGTszmJ1tbz7FfgEgQpwRG48mzFBb+59UptVZQyUM8u7RuaXrFWWKvM89Dt4+JrQkWtHezUesdsOu0CufeHf/+iDcgwF9LxOzg7PMppkNV1yIak6mBZ1aB9WFgZYh6XSwSxWXgcZhc46nS9mzWEiUBW5EhsmJ3Hzlb5RA+qtx3DgYodSLf1haXeGtAQDKq9cWfKR4+R2ALoME/jLWbUx50I6kAQWcCf+H0Bs= haccht@ubuntu"]

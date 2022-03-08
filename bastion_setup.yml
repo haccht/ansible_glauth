@@ -1,0 +1,9 @@
+- name: setup bastion server
+  hosts: localhost
+  become: true
+
+  roles:
+    - role: ufw
+    - role: sshd
+    - role: glauth
+    - role: sssd

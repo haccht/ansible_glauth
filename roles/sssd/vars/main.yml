@@ -1,0 +1,7 @@
+ldap_addr: ldaps://127.0.0.1:636
+ldap_base_dn: dc=example,dc=com
+ldap_bind_dn: cn=admin,dc=example,dc=com
+ldap_authtok: AAAQAM3XzTiVonlLWjbpYQN/NF64ZUA5bd63yYHAchkAmCkroYA/S42WRsMY9bNAMDddcJ1FMSvHq7Ql2gQwD0Z5o8oAAQID
+ldap_cert_path: /etc/glauth/certs/glauth.crt
+
+sssd_config_path: /etc/sssd/sssd.conf

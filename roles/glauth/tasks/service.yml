@@ -1,0 +1,5 @@
+- name: update glauth service enabled/started
+  ansible.builtin.systemd:
+    name: glauth
+    enabled: yes
+    state: started

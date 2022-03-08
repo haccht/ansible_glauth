@@ -1,0 +1,16 @@
+glauth_repository: https://github.com/glauth/glauth
+glauth_version: v2.1.0
+glauth_architecture: linuxamd64
+glauth_download_url: "{{ glauth_repository }}/release/download/{{ glauth_version }}/{{ glauth_architecture }}.zip"
+
+glauth_dir: /usr/local/bin
+glauth_path: "{{ glauth_dir }}/glauth"
+glauth_service_user: glauth
+glauth_service_group: glauth
+
+glauth_config_dir: /etc/glauth
+glauth_config_path: "{{ glauth_config_dir }}/glauth.conf"
+glauth_certs_dir: "{{ glauth_config_dir }}/certs"
+
+glauth_base_dn: dc=example,dc=com
+glauth_ldaps_addr: 127.0.0.1:636

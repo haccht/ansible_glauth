@@ -1,0 +1,56 @@
+- name: include_vars users
+  ansible.builtin.include_vars:
+    dir: vars/users
+    name: users_dict
+
+- name: include_vars groups
+  ansible.builtin.include_vars:
+    dir: vars/groups
+    name: groups_dict
+
+- name: create glauth config directory
+  ansible.builtin.file:
+    state: directory
+    path: "{{ glauth_config_dir }}"
+    owner: "{{ glauth_service_user }}"
+    group: "{{ glauth_service_group }}"
+    mode: 0711
+
+- name: create glauth config file
+  ansible.builtin.template:
+    src: glauth.conf.j2
+    dest: "{{ glauth_config_path }}"
+    owner: "{{ glauth_service_user }}"
+    group: "{{ glauth_service_group }}"
+    mode: 0600
+    force: true
+  notify: update glauth service restarted
+
+- name: create glauth cert directory
+  ansible.builtin.file:
+    state: directory
+    path: "{{ glauth_certs_dir }}"
+    owner: "{{ glauth_service_user }}"
+    group: "{{ glauth_service_group }}"
+
+- name: create glauth cert files
+  ansible.builtin.command:
+    cmd: "openssl req -x509 -newkey rsa:4096 -keyout {{ glauth_certs_dir }}/glauth.key -out {{ glauth_certs_dir }}/glauth.crt -days 365 -nodes -subj /CN={{ ansible_hostname }}"
+    creates: "{{ glauth_certs_dir }}/glauth.key"
+
+- name: modify glauth cert key file
+  ansible.builtin.file:
+    path: "{{ glauth_certs_dir }}/glauth.key"
+    owner: "{{ glauth_service_user }}"
+    group: "{{ glauth_service_group }}"
+
+- name: modify glauth cert file
+  ansible.builtin.file:
+    path: "{{ glauth_certs_dir }}/glauth.crt"
+    owner: "{{ glauth_service_user }}"
+    group: "{{ glauth_service_group }}"
+
+- name: create glauth systemd unit file
+  ansible.builtin.template:
+    src: glauth.service.j2
+    dest: /etc/systemd/system/glauth.service

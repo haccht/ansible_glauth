@@ -1,0 +1,41 @@
+- name: install sssd
+  ansible.builtin.package:
+    name:
+    - sssd
+    - sssd-ldap
+    state: present
+
+- name: update sssd service enabled/started
+  ansible.builtin.systemd:
+    name: sssd
+    enabled: yes
+    state: started
+
+- name: modify ldap.conf
+  ansible.builtin.lineinfile:
+    path: /etc/ldap/ldap.conf
+    regexp: /^TLS_CACERT/
+    line: "TLS_CACERT {{ ldap_cert_path }}"
+
+- name: modify common-session pam
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/common-session
+    line: "session required        pam_mkhomedir.so skel=/etc/skel umask=0077"
+    insertafter: EOF
+    state: present
+
+- name: modify common-account pam
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/common-account
+    line: '#account\1'
+    regexp: '^account(.*pam_sss.so.*)'
+    backrefs: yes
+
+- name: create sssd config file
+  ansible.builtin.template:
+    src: sssd.conf.j2
+    dest: "{{ sssd_config_path }}"
+    owner: root
+    group: root
+    mode: 0600
+  notify: update sssd service restarted

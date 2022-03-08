@@ -1,0 +1,25 @@
+- name: add glauth user
+  ansible.builtin.user:
+    name: glauth
+    shell: /sbin/nologin
+
+- name: install glauth binary
+  ansible.builtin.shell: |
+    curl -sL {{ glauth_repository }}/releases/download/{{ glauth_version }}/{{ glauth_architecture }}.zip -o /tmp/glauth.zip
+    unzip /tmp/glauth.zip glauth -d {{ glauth_dir }}
+    rm -f /tmp/glauth.zip
+  args:
+    creates: "{{ glauth_path }}"
+
+- name: modify glauth binary
+  ansible.builtin.file:
+    path: "{{ glauth_path }}"
+    owner: "{{ glauth_service_user }}"
+    group: "{{ glauth_service_group }}"
+    mode: 0755
+
+- name: modify glauth capabilities for low port privileges
+  community.general.capabilities:
+    path: "{{ glauth_path }}"
+    capability: cap_net_bind_service+ep
+    state: present

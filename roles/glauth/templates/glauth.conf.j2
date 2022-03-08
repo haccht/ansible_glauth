@@ -1,0 +1,64 @@
+# General configuration.
+debug = true
+syslog = false
+
+# Server configuration.
+[ldap]
+  enabled = false
+
+[ldaps]
+  enabled = true
+  listen = "{{ glauth_ldaps_addr }}"
+  cert = "{{ glauth_certs_dir }}/glauth.crt"
+  key = "{{ glauth_certs_dir }}/glauth.key"
+
+[api]
+  enabled = false
+
+# The backend section controls the data store.
+[backend]
+  datastore = "config"
+  anonymousDSE = true
+  baseDN = "{{ glauth_base_dn }}"
+
+[behaviors]
+  IgnoreCapabilities = false
+  LimitFailedBinds = true
+  NumberOfFailedBinds = 3
+  PeriodOfFailedBinds = 10
+  BlockFailedBindsFor = 60
+  PruneSourceTableEvery = 600
+  PruneSourcesOlderThan = 600
+
+# The users section contains a hardcoded list of valid users.
+[[users]]
+  name = "admin"
+  uidnumber = 500
+  primarygroup = 500
+  passsha256 = "4d6a2f8e047f6e20f3d1185df73ab4e686c1f0df17dcda615928a227d1adbdb6"
+    [[users.capabilities]]
+    action = "search"
+    object = "*"
+
+{% for user_name, user in users_dict.items() %}
+[[users]]
+  name = "{{ user_name }}"
+  mail = "{{ user.mail }}"
+  uidnumber = {{ user.uid }}
+  primarygroup = {{ user.gid }}
+  passsha256 = "{{ user.passsha256 }}"
+  sshkeys = {{ user.sshkeys | default([]) }}
+
+{% endfor %}
+
+# The groups section contains a hardcoded list of valid users.
+[[groups]]
+  name = "admin"
+  gidnumber = 500
+
+{% for group_name, group in groups_dict.items() %}
+[[groups]]
+  name = "{{ group_name }}"
+  gidnumber = {{ group.gid }}
+
+{% endfor %}

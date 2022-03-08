@@ -1,0 +1,36 @@
+- name: install ufw
+  ansible.builtin.apt:
+    package: ufw
+    state: present
+
+- name: configure ufw defaults
+  community.general.ufw:
+    direction: "{{ item.direction }}"
+    policy: "{{ item.policy }}"
+  loop:
+    - { direction: 'incoming', policy: 'deny' }
+    - { direction: 'outgoing', policy: 'allow' }
+  notify:
+    - restart ufw
+
+- name: configure ufw rules
+  community.general.ufw:
+    rule: "{{ item.rule }}"
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  loop:
+    - { rule: 'limit', port: '22', proto: 'tcp' }
+      #- { rule: 'allow', port: '80', proto: 'tcp' }
+      #- { rule: 'allow', port: '443', proto: 'tcp' }
+  notify:
+    - restart ufw
+
+- name: enable ufw logging
+  community.general.ufw:
+    logging: on
+  notify:
+    - restart ufw
+
+- name: enable ufw
+  community.general.ufw:
+    state: enabled
